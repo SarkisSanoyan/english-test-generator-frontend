@@ -61,7 +61,7 @@ export default function HomePage() {
         />
         <textarea
           rows={10}
-          placeholder="Paste your text here (max. 1000 words)"
+          placeholder="Paste your text here (max. 5000 words)..."
           value={text}
           onChange={(e) => setText(e.target.value)}
           className={styles.homeTextarea}
