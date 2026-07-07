@@ -21,6 +21,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    // Ensure axios sends cookies for cross-site requests (cookie-based auth)
+    axios.defaults.withCredentials = true;
+
     // Initialize auth on app mount
     useEffect(() => {
         const initAuth = async () => {
