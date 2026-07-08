@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import type { User } from "../types/types";
-import { apiLogout } from "../api/auth.api";
+import { apiLogout, getAuthToken, setAuthToken } from "../api/auth.api";
 import { AUTH_API } from "../config/api.config";
 
 type AuthContextType = {
@@ -24,6 +24,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Ensure axios sends cookies for cross-site requests (cookie-based auth)
     axios.defaults.withCredentials = true;
 
+    useEffect(() => {
+        const token = getAuthToken();
+        if (token) {
+            setAuthToken(token);
+        }
+
+        const interceptorId = axios.interceptors.request.use((config) => {
+            const activeToken = getAuthToken();
+            if (activeToken && config.headers) {
+                config.headers.Authorization = `Bearer ${activeToken}`;
+            }
+            return config;
+        });
+
+        return () => {
+            axios.interceptors.request.eject(interceptorId);
+        };
+    }, []);
+
     // Initialize auth on app mount
     useEffect(() => {
         const initAuth = async () => {
@@ -35,14 +54,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 if (res.data?.user) {
                     setUser(res.data.user);
                     setIsAuthenticated(true);
+                    if (res.data?.token) {
+                        setAuthToken(res.data.token);
+                    }
                 } else {
                     setUser(null);
                     setIsAuthenticated(false);
+                    setAuthToken(null);
                 }
             } catch (err) {
                 console.error("Auth initialization failed:", err);
                 setUser(null);
                 setIsAuthenticated(false);
+                setAuthToken(null);
             } finally {
                 setLoading(false);
             }

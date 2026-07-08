@@ -8,10 +8,27 @@ import type {
   ChangePasswordRequest,
 } from "../types/types";
 
+let inMemoryAuthToken: string | null = null;
+
+export const setAuthToken = (token?: string | null) => {
+  inMemoryAuthToken = token ?? null;
+
+  if (token) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    return;
+  }
+
+  delete axios.defaults.headers.common.Authorization;
+};
+
+export const getAuthToken = () => inMemoryAuthToken;
+
 export const apiLogin = async (data: LoginRequest): Promise<AuthResponse> => {
   const response = await axios.post(`${AUTH_API}/login`, data, {
     withCredentials: true,
   });
+
+  setAuthToken(response.data?.token ?? response.data?.accessToken);
   return response.data;
 };
 
@@ -21,6 +38,8 @@ export const apiAdminLogin = async (
   const response = await axios.post(`${AUTH_API}/admin/login`, data, {
     withCredentials: true,
   });
+
+  setAuthToken(response.data?.token ?? response.data?.accessToken);
   return response.data;
 };
 
@@ -30,6 +49,8 @@ export const apiRegister = async (
   const response = await axios.post(`${AUTH_API}/register`, data, {
     withCredentials: true,
   });
+
+  setAuthToken(response.data?.token ?? response.data?.accessToken);
   return response.data;
 };
 
@@ -39,6 +60,7 @@ export const apiLogout = async (): Promise<void> => {
   } catch (e) {
     console.error("Logout failed", e);
   } finally {
+    setAuthToken(null);
     console.log("Clearing local auth state");
   }
 };
