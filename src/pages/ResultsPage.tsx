@@ -1,11 +1,12 @@
 import { memo, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Confetti from "react-confetti";
-import { QUIZ_API, RESULTS_API } from "../config/api.config";
+import { QUIZ_API } from "../config/api.config";
 import { type Quiz } from "../types/types";
 import { useQuizContext } from "../hooks/useQuizContext";
 import { useTimer } from "../hooks/useTimer";
 import { useAuth } from "../hooks/useAuth";
+import { saveResult } from "../api/results.api";
 
 
 function ResultsPage() {
@@ -54,35 +55,17 @@ function ResultsPage() {
     useEffect(() => {
         if (!quiz || score === null || saved) return;
 
-        const saveResult = async () => {
+        const persistResult = async () => {
             try {
-                const response = await fetch(RESULTS_API, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        quizId: quiz._id,
-                        score: Number(score),
-                        elapsedTime: lastElapsedTime ?? 0,
-                        totalQuestions: quiz.questions.length,
-                        userId: user?._id || undefined,
-                        email: user?.email || undefined,
-                    }),
-                    credentials: "include",
+                const data = await saveResult({
+                    quizId: quiz._id,
+                    score: Number(score),
+                    elapsedTime: lastElapsedTime ?? 0,
+                    totalQuestions: quiz.questions.length,
+                    userId: user?._id || undefined,
+                    email: user?.email || undefined,
                 });
 
-                if (!response.ok) {
-                    if (response.status === 429) {
-                        console.warn("Too many requests, try again later");
-                        return;
-                    }
-
-                    const errText = await response.text();
-                    throw new Error(errText || "Failed to save result");
-                }
-
-                const data = await response.json();
                 console.log("Result saved:", data);
                 setSaved(true);
             } catch (err) {
@@ -90,7 +73,7 @@ function ResultsPage() {
             }
         };
 
-        saveResult();
+        persistResult();
     }, [quiz, score, lastElapsedTime, saved, user]);
 
     // Show confetti if score >= 70%

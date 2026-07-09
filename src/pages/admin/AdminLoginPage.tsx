@@ -28,7 +28,7 @@ function AdminLoginPage() {
             }
 
             // Use AuthContext login to update global state
-            login(response.user);
+            login(response.user, response.token);
 
             // Redirect to admin dashboard
             navigate("/admin");
