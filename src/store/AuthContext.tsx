@@ -8,7 +8,7 @@ type AuthContextType = {
     user: User | null;
     isAuthenticated: boolean;
     loading: boolean;
-    login: (userData: User) => void;
+    login: (userData: User, token?: string | null) => void;
     logout: () => Promise<void>;
 };
 
@@ -76,9 +76,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }, []);
 
 
-    const login = (userData: User) => {
+    const login = (userData: User, token?: string | null) => {
         setUser(userData);
         setIsAuthenticated(true);
+        setAuthToken(token ?? null);
     };
 
     const logout = async () => {
