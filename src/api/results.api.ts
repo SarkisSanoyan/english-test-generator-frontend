@@ -1,9 +1,9 @@
 import axios from "axios";
-import { BASE_URL, RESULTS_API } from "../config/api.config";
+import { ADMIN_RESULTS_API, USER_RESULTS_API } from "../config/api.config";
 import { getAuthToken } from "./auth.api";
 
 export const fetchAllResults = async () => {
-    const res = await axios.get(RESULTS_API, {
+    const res = await axios.get(ADMIN_RESULTS_API, {
         withCredentials: true,
     });
 
@@ -20,7 +20,7 @@ export const saveResult = async (payload: {
 }) => {
     const token = getAuthToken();
 
-    const res = await axios.post(`${BASE_URL}/results`, payload, {
+    const res = await axios.post(USER_RESULTS_API, payload, {
         withCredentials: true,
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });

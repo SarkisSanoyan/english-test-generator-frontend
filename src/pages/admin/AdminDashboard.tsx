@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { USERS_API, QUIZ_API, RESULTS_API, BASE_URL } from "../../config/api.config";
+import { USERS_API, QUIZ_API, ADMIN_RESULTS_API, BASE_URL } from "../../config/api.config";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface Result {
@@ -38,7 +38,7 @@ function AdminDashboard() {
         const [usersRes, quizzesRes, resultsRes, submissionsRes] = await Promise.all([
           axios.get(USERS_API, { withCredentials: true }),
           axios.get(QUIZ_API, { withCredentials: true }),
-          axios.get(RESULTS_API, { withCredentials: true }),
+          axios.get(ADMIN_RESULTS_API, { withCredentials: true }),
           axios.get(`${BASE_URL}/admin/submissions`, { withCredentials: true })
         ]);
 
