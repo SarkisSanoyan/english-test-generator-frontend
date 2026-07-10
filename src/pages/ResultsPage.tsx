@@ -57,7 +57,7 @@ function ResultsPage() {
 
         const persistResult = async () => {
             try {
-                const data = await saveResult({
+                await saveResult({
                     quizId: quiz._id,
                     score: Number(score),
                     elapsedTime: lastElapsedTime ?? 0,
@@ -65,21 +65,12 @@ function ResultsPage() {
                     userId: user?._id || undefined,
                     email: user?.email || undefined,
                 });
-
-                if (data?.success === false && data?.skipped) {
-                    console.info("Result sync skipped:", data.message);
-                } else {
-                    console.log("Result saved:", data);
-                }
-
-                setSaved(true);
-            } catch (err) {
-                console.warn("Result sync could not be completed:", err);
+            } finally {
                 setSaved(true);
             }
         };
 
-        persistResult();
+        void persistResult();
     }, [quiz, score, lastElapsedTime, saved, user]);
 
     // Show confetti if score >= 70%
