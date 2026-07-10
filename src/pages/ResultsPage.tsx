@@ -66,10 +66,16 @@ function ResultsPage() {
                     email: user?.email || undefined,
                 });
 
-                console.log("Result saved:", data);
+                if (data?.success === false && data?.skipped) {
+                    console.info("Result sync skipped:", data.message);
+                } else {
+                    console.log("Result saved:", data);
+                }
+
                 setSaved(true);
             } catch (err) {
-                console.error("Error saving result:", err);
+                console.warn("Result sync could not be completed:", err);
+                setSaved(true);
             }
         };
 
