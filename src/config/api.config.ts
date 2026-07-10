@@ -7,5 +7,6 @@ export const BASE_URL = isDev
 export const AUTH_API = `${BASE_URL}/auth`;
 export const QUIZ_API = `${BASE_URL}/quiz`;
 export const ADMIN_QUIZZES_API = `${BASE_URL}/quiz`;
+export const ADMIN_RESULTS_API = `${BASE_URL}/admin/results`;
 export const RESULTS_API = `${BASE_URL}/results`;
 export const USERS_API = `${BASE_URL}/admin/users`;
