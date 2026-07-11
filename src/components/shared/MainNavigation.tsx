@@ -13,7 +13,7 @@ function MainNavigation() {
 
     const handleLogout = () => {
         logout();
-        navigate('/', { replace: true });
+        navigate('/home', { replace: true });
     };
 
     if (loading) return null;
@@ -53,7 +53,7 @@ function MainNavigation() {
                     <li>
                         {isAuthenticated ? (
                             <NavLink
-                                to="/home"
+                                to="/login"
                                 onClick={handleLogout}
                                 className={({ isActive }) =>
                                     isActive ? classes.active : undefined
