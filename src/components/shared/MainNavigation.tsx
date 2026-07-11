@@ -13,7 +13,7 @@ function MainNavigation() {
 
     const handleLogout = () => {
         logout();
-        navigate('/');
+        navigate('/', { replace: true });
     };
 
     if (loading) return null;
