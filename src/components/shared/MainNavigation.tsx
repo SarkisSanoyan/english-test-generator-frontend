@@ -53,7 +53,7 @@ function MainNavigation() {
                     <li>
                         {isAuthenticated ? (
                             <NavLink
-                                to="/"
+                                to="/home"
                                 onClick={handleLogout}
                                 className={({ isActive }) =>
                                     isActive ? classes.active : undefined
