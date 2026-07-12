@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         } finally {
             setUser(null);
             setIsAuthenticated(false);
-            window.location.reload();
+            // window.location.reload();
         }
     };
 
