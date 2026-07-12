@@ -35,7 +35,7 @@ function App() {
           <Routes>
             {/* ---------- PUBLIC SITE ---------- */}
             <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/home" replace />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/home" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
