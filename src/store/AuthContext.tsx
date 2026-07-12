@@ -14,27 +14,27 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-type AuthProviderProps = { children: React.ReactNode };
+type AuthProviderProps = {
+    children: React.ReactNode;
+};
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // Ensure axios sends cookies for cross-site requests (cookie-based auth)
+    // Send cookies with every request
     axios.defaults.withCredentials = true;
 
+    // Add token interceptor once
     useEffect(() => {
-        const token = getAuthToken();
-        if (token) {
-            setAuthToken(token);
-        }
-
         const interceptorId = axios.interceptors.request.use((config) => {
-            const activeToken = getAuthToken();
-            if (activeToken && config.headers) {
-                config.headers.Authorization = `Bearer ${activeToken}`;
+            const token = getAuthToken();
+
+            if (token && config.headers) {
+                config.headers.Authorization = `Bearer ${token}`;
             }
+
             return config;
         });
 
@@ -43,7 +43,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         };
     }, []);
 
-    // Initialize auth on app mount
+
+    // Restore authentication after refresh
     useEffect(() => {
         const initAuth = async () => {
             try {
@@ -54,7 +55,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 if (res.data?.user) {
                     setUser(res.data.user);
                     setIsAuthenticated(true);
-                    if (res.data?.token) {
+
+                    if (res.data.token) {
                         setAuthToken(res.data.token);
                     }
                 } else {
@@ -62,11 +64,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                     setIsAuthenticated(false);
                     setAuthToken(null);
                 }
-            } catch (err) {
-                console.error("Auth initialization failed:", err);
+
+            } catch (error) {
+                console.error("Auth restore failed:", error);
+
                 setUser(null);
                 setIsAuthenticated(false);
                 setAuthToken(null);
+
             } finally {
                 setLoading(false);
             }
@@ -82,24 +87,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setAuthToken(token ?? null);
     };
 
+
     const logout = async () => {
         try {
             await apiLogout();
-        } catch (err) {
-            console.error("Logout failed:", err);
+        } catch (error) {
+            console.error("Logout failed:", error);
         } finally {
             setUser(null);
             setIsAuthenticated(false);
+            setAuthToken(null);
         }
     };
 
+
     return (
         <AuthContext.Provider
-            value={{ user, isAuthenticated, login, logout, loading }}
+            value={{
+                user,
+                isAuthenticated,
+                login,
+                logout,
+                loading,
+            }}
         >
             {!loading && children}
         </AuthContext.Provider>
     );
 };
+
 
 export { AuthContext };
