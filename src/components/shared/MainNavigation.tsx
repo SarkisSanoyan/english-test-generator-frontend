@@ -11,7 +11,8 @@ function MainNavigation() {
     const { isAuthenticated, logout, loading } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+    const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
         logout();
         navigate('/', { replace: true });
     };
