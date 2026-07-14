@@ -14,91 +14,218 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-type AuthProviderProps = { children: React.ReactNode };
+type AuthProviderProps = {
+    children: React.ReactNode;
+};
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // Ensure axios sends cookies for cross-site requests (cookie-based auth)
-    axios.defaults.withCredentials = true;
 
     useEffect(() => {
-        const token = getAuthToken();
-        if (token) {
-            setAuthToken(token);
-        }
+        axios.defaults.withCredentials = true;
 
-        const interceptorId = axios.interceptors.request.use((config) => {
-            const activeToken = getAuthToken();
-            if (activeToken && config.headers) {
-                config.headers.Authorization = `Bearer ${activeToken}`;
+
+        // Add access token to every request
+        const requestInterceptor = axios.interceptors.request.use(
+            (config) => {
+                const token = getAuthToken();
+
+                if (token) {
+                    config.headers.Authorization =
+                        `Bearer ${token}`;
+                }
+
+                return config;
+            },
+            (error) => Promise.reject(error)
+        );
+
+
+        // Refresh token automatically when access token expires
+        const responseInterceptor = axios.interceptors.response.use(
+            (response) => response,
+
+            async (error) => {
+                const originalRequest = error.config;
+
+
+                if (
+                    error.response?.status === 401 &&
+                    !originalRequest._retry
+                ) {
+                    originalRequest._retry = true;
+
+                    try {
+                        const response = await axios.post(
+                            `${AUTH_API}/refresh`,
+                            {},
+                            {
+                                withCredentials: true,
+                            }
+                        );
+
+
+                        const newAccessToken =
+                            response.data.accessToken;
+
+
+                        if (newAccessToken) {
+                            setAuthToken(newAccessToken);
+
+                            originalRequest.headers.Authorization =
+                                `Bearer ${newAccessToken}`;
+                        }
+
+
+                        return axios(originalRequest);
+
+                    } catch (refreshError) {
+                        setAuthToken(null);
+                        setUser(null);
+                        setIsAuthenticated(false);
+
+                        return Promise.reject(refreshError);
+                    }
+                }
+
+
+                return Promise.reject(error);
             }
-            return config;
-        });
+        );
+
 
         return () => {
-            axios.interceptors.request.eject(interceptorId);
+            axios.interceptors.request.eject(
+                requestInterceptor
+            );
+
+            axios.interceptors.response.eject(
+                responseInterceptor
+            );
         };
+
     }, []);
 
-    // Initialize auth on app mount
+
+
+    // Initialize authentication
     useEffect(() => {
+
         const initAuth = async () => {
             try {
-                const res = await axios.get(`${AUTH_API}/refresh`, {
-                    withCredentials: true,
-                });
 
-                if (res.data?.user) {
-                    setUser(res.data.user);
-                    setIsAuthenticated(true);
-                    if (res.data?.token) {
-                        setAuthToken(res.data.token);
+                const response = await axios.post(
+                    `${AUTH_API}/refresh`,
+                    {},
+                    {
+                        withCredentials: true,
                     }
+                );
+
+
+                if (response.data?.user) {
+
+                    setUser(response.data.user);
+                    setIsAuthenticated(true);
+
+
+                    if(response.data.accessToken){
+                        setAuthToken(
+                            response.data.accessToken
+                        );
+                    }
+
                 } else {
+
                     setUser(null);
                     setIsAuthenticated(false);
                     setAuthToken(null);
+
                 }
-            } catch (err) {
-                console.error("Auth initialization failed:", err);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Auth initialization failed:",
+                    error
+                );
+
                 setUser(null);
                 setIsAuthenticated(false);
                 setAuthToken(null);
+
             } finally {
+
                 setLoading(false);
+
             }
         };
 
+
         initAuth();
+
     }, []);
 
-    const login = (userData: User, token?: string | null) => {
+
+
+    const login = (
+        userData: User,
+        token?: string | null
+    ) => {
+
         setUser(userData);
         setIsAuthenticated(true);
-        setAuthToken(token ?? null);
+
+        if(token){
+            setAuthToken(token);
+        }
+
     };
 
+
+
     const logout = async () => {
+
         try {
+
             await apiLogout();
-        } catch (err) {
-            console.error("Logout failed:", err);
+
+        } catch(error){
+
+            console.error(
+                "Logout failed:",
+                error
+            );
+
         } finally {
+
             setUser(null);
             setIsAuthenticated(false);
+            setAuthToken(null);
+
         }
     };
 
+
+
     return (
         <AuthContext.Provider
-            value={{ user, isAuthenticated, login, logout, loading }}
+            value={{
+                user,
+                isAuthenticated,
+                loading,
+                login,
+                logout,
+            }}
         >
             {!loading && children}
         </AuthContext.Provider>
     );
 };
+
 
 export { AuthContext };
