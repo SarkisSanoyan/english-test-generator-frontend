@@ -1,205 +1,265 @@
-Sure. Here is the complete `README.md` file in clean Markdown format. You can copy-paste it directly into your repository.
+# 🧠 English Test Generator - Frontend
 
-````md
-# English Test Generator Backend 🚀
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-Latest-purple?logo=vite)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3-blue?logo=tailwindcss)
 
-Backend API for an English learning platform that generates vocabulary quizzes from user-provided text.
+A modern AI-powered English learning application that automatically generates personalized quizzes from any English text.
 
-The application processes English text, extracts important vocabulary words, generates different types of questions, and stores quizzes for learning and practice.
-
-Built with **Node.js, Express.js, TypeScript, MongoDB, Redis, and JWT Authentication**.
+Users can paste an article, paragraph, or learning material, and the application analyzes the text and creates interactive exercises including vocabulary questions, translations, and definitions.
 
 ---
 
-## ✨ Features
+## 🚀 Live Demo
 
-## 🔐 Authentication & Authorization
+Frontend:
 
-- User registration and login
-- JWT authentication
-- Access and refresh token system
-- Refresh token rotation
-- Secure HTTP-only cookies
-- Password hashing with bcrypt
+🔗 https://english-test-generator-frontend.vercel.app
+
+Backend API:
+
+🔗 https://english-test-generator-backend.onrender.com
+
+---
+
+# 📌 About The Project
+
+English Test Generator is a full-stack educational platform designed to help users improve English vocabulary and comprehension.
+
+The application transforms any English text into a personalized learning experience by extracting important words and generating different types of questions.
+
+The goal of the project is to make English learning more interactive, efficient, and personalized.
+
+---
+
+# ✨ Features
+
+## 📚 Text-Based Quiz Generation
+
+- Paste any English text
+- Automatically analyze the content
+- Extract important vocabulary
+- Generate quizzes based on the text
+
+---
+
+## 📝 Multiple Question Types
+
+The application supports different learning exercises:
+
+### Fill In The Blank
+
+Example:
+
+> I usually drink ___ in the morning.
+
+Answer:
+
+> coffee
+
+---
+
+### Translation Questions
+
+Example:
+
+Translate:
+
+> "beautiful"
+
+Answer:
+
+> "գեղեցիկ"
+
+---
+
+### Definition Matching
+
+Example:
+
+Word:
+
+> "Adventure"
+
+Definition:
+
+> An exciting experience or journey
+
+---
+
+## 🎯 Interactive Quiz Experience
+
+Features:
+
+- Step-by-step questions
+- Answer selection
+- Progress tracking
+- Score calculation
+- Final results page
+
+---
+
+## 🌍 Armenian Translation Support
+
+The application includes English-to-Armenian translation functionality to help Armenian speakers learn vocabulary faster.
+
+---
+
+## 🔐 User Features
+
+- User authentication
+- Personalized quizzes
+- Saved quiz history
 - Protected routes
-- Authentication middleware
 
 ---
 
-## 📚 Quiz Generation
+# 🛠️ Tech Stack
 
-Users can submit English text and automatically generate vocabulary quizzes.
+## Frontend
 
-Supported question types:
-
-- Fill-in-the-blank questions
-- Word definition matching
-- English → Armenian translation questions
-
-Generated quizzes contain:
-
-- Extracted vocabulary words
-- Questions
-- Answer options
-- Correct answers
-- Word references
-- Quiz metadata
+| Technology | Purpose |
+|---|---|
+| React | UI library |
+| TypeScript | Type safety |
+| Vite | Development environment |
+| Tailwind CSS | Styling |
+| Global state management |
+| React Router | Navigation |
+| Axios | API communication |
+| React Hooks | Component logic |
 
 ---
-
-## 🗂 Database Management
-
-MongoDB is used as the primary database.
-
-Main collections:
-
-- Users
-- Quizzes
-- Questions
-- Words
-- Text submissions
-
-Technologies:
-
-- MongoDB Atlas
-- Mongoose ODM
-- TypeScript models
-
----
-
-## ⚡ Redis Integration
-
-Redis is used for performance optimization and security.
-
-Implemented features:
-
-- API rate limiting
-- Data caching
-- Request optimization
-
-Technologies:
-
-- Redis
-- Upstash Redis
-- ioredis
-
----
-
-## 🛡 Security Features
-
-The backend includes:
-
-- Helmet security middleware
-- CORS configuration
-- Rate limiting
-- JWT verification middleware
-- Zod validation
-- Secure cookies
-- Centralized error handling
-- Environment variable protection
-
----
-
-# 🛠 Tech Stack
 
 ## Backend
 
-- Node.js
-- Express.js
-- TypeScript
-
-## Database
-
-- MongoDB
-- Mongoose
-
-## Authentication
-
-- JSON Web Token (JWT)
-- bcrypt
-- Cookies
-
-## Validation
-
-- Zod
-
-## Cache & Performance
-
-- Redis
-- Upstash Redis
-- ioredis
-
-## Development Tools
-
-- ESLint
-- Prettier
-- Nodemon
-
-## Deployment
-
-- Docker
-- Railway
-- GitHub Actions
-
----
-
-# 📁 Project Structure
+Backend repository:
 
 ```
-src
-│
-├── config
-│   ├── database.ts
-│   ├── redis.ts
-│   └── env.ts
-│
-├── controllers
-│   ├── auth.controller.ts
-│   ├── quiz.controller.ts
-│   └── word.controller.ts
-│
-├── middleware
-│   ├── auth.middleware.ts
-│   ├── error.middleware.ts
-│   └── rateLimiter.middleware.ts
-│
-├── models
-│   ├── User.ts
-│   ├── Quiz.ts
-│   ├── Question.ts
-│   └── Word.ts
-│
-├── routes
-│   ├── auth.routes.ts
-│   ├── quiz.routes.ts
-│   └── word.routes.ts
-│
-├── services
-│   ├── auth.service.ts
-│   ├── quiz.service.ts
-│   └── email.service.ts
-│
-├── utils
-│
-├── app.ts
-└── server.ts
+Express.js
+Node.js
+MongoDB
+Mongoose
+Redis
+JWT Authentication
 ```
 
 ---
 
-# 🚀 Installation
+# 📂 Project Structure
 
-## 1. Clone the repository
+```
+english-test-generator-frontend
+│
+├── public
+│ └── Static public assets
+│
+├── src
+│
+│ ├── api
+│ │ ├── auth.api.ts
+│ │ ├── quiz.api.ts
+│ │ ├── results.api.ts
+│ │ └── users.api.ts
+│ │
+│ ├── assets
+│ │ └── Brain.png
+│ │
+│ ├── components
+│ │ │
+│ │ ├── shared
+│ │ │ ├── Footer.module.css
+│ │ │ ├── Footer.tsx
+│ │ │ ├── MainNavigation.module.css
+│ │ │ └── MainNavigation.tsx
+│ │ │
+│ │ ├── AdminLayout.tsx
+│ │ ├── AdminRoute.tsx
+│ │ ├── Layout.tsx
+│ │ └── QuestionCard.tsx
+│ │
+│ ├── config
+│ │ └── api.config.ts
+│ │
+│ ├── hooks
+│ │ ├── useAuth.ts
+│ │ ├── useQuizContext.ts
+│ │ ├── useTheme.ts
+│ │ └── useTimer.ts
+│ │
+│ ├── pages
+│ │ │
+│ │ ├── admin
+│ │ │ └── Admin pages
+│ │ │
+│ │ ├── AboutPage.module.css
+│ │ ├── AboutPage.tsx
+│ │ ├── ForgotPasswordPage.tsx
+│ │ ├── HomePage.module.css
+│ │ ├── HomePage.tsx
+│ │ ├── LoginPage.module.css
+│ │ ├── LoginPage.tsx
+│ │ ├── QuizPage.tsx
+│ │ ├── RegisterPage.tsx
+│ │ ├── ResetPasswordPage.tsx
+│ │ └── ResultsPage.tsx
+│ │
+│ ├── store
+│ │ ├── AuthContext.tsx
+│ │ ├── QuizContext.tsx
+│ │ └── ThemeContext.tsx
+│ │
+│ ├── types
+│ │ └── TypeScript interfaces and types
+│ │
+│ ├── App.tsx
+│ ├── index.css
+│ └── main.tsx
+│
+├── dist
+│ └── Production build files
+│
+├── node_modules
+│
+├── .gitignore
+│
+├── eslint.config.js
+│
+├── index.html
+│
+├── package.json
+│
+├── package-lock.json
+│
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+│
+├── vite.config.ts
+│
+└── vercel.json
+```
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone Repository
 
 ```bash
-git clone https://github.com/SarkisSanoyan/english-test-generator-backend.git
+git clone https://github.com/SarkisSanoyan/english-test-generator-frontend.git
+```
 
-cd english-test-generator-backend
+Navigate into the project:
+
+```bash
+cd english-test-generator-frontend
 ```
 
 ---
 
-## 2. Install dependencies
+## 2. Install Dependencies
 
 ```bash
 npm install
@@ -207,208 +267,132 @@ npm install
 
 ---
 
-## 3. Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-PORT=5000
-
-NODE_ENV=development
-
-MONGO_URI=your_mongodb_connection_string
-
-JWT_ACCESS_SECRET=your_access_token_secret
-
-JWT_REFRESH_SECRET=your_refresh_token_secret
-
-REDIS_URL=your_redis_connection_url
-
-CLIENT_URL=http://localhost:5173
-
-EMAIL_HOST=your_email_host
-EMAIL_PORT=your_email_port
-EMAIL_USER=your_email_username
-EMAIL_PASSWORD=your_email_password
-```
-
----
-
-## 4. Run Development Server
+## 3. Start Development Server
 
 ```bash
 npm run dev
 ```
 
-The server will start:
+Application will run on:
 
 ```
-http://localhost:5000
-```
-
----
-
-# 📌 API Documentation
-
-## Authentication Routes
-
-### Register User
-
-```
-POST /api/v1/auth/register
-```
-
-Example request:
-
-```json
-{
-  "name": "John",
-  "email": "john@example.com",
-  "password": "password123"
-}
+http://localhost:5173
 ```
 
 ---
 
-### Login User
+# 📜 Available Scripts
+
+## Development
+
+```bash
+npm run dev
+```
+
+Runs development server.
+
+---
+
+## Production Build
+
+```bash
+npm run build
+```
+
+Creates optimized production build.
+
+---
+
+## Preview Build
+
+```bash
+npm run preview
+```
+
+Preview production build locally.
+
+---
+
+# 🔄 Application Flow
 
 ```
-POST /api/v1/auth/login
+User enters English text
+          |
+          ↓
+Frontend sends request to API
+          |
+          ↓
+Backend analyzes text
+          |
+          ↓
+Words and questions generated
+          |
+          ↓
+Quiz displayed to user
+          |
+          ↓
+User completes quiz
+          |
+          ↓
+Results displayed
 ```
 
 ---
 
-### Logout User
+# 🎨 UI Features
 
-```
-POST /api/v1/auth/logout
-```
-
----
-
-# Quiz Routes
-
-## Generate Quiz
-
-```
-POST /api/v1/quizzes/generate
-```
-
-Example request:
-
-```json
-{
-  "text": "Artificial intelligence is transforming modern education."
-}
-```
-
-Example response:
-
-```json
-{
-  "quizId": "12345",
-  "questions": [
-    {
-      "type": "translation",
-      "word": "education",
-      "options": [
-        "կրթություն",
-        "տեխնոլոգիա"
-      ]
-    }
-  ]
-}
-```
+- Responsive design
+- Mobile-friendly layout
+- Modern educational interface
+- Interactive quiz cards
+- Clean user experience
 
 ---
 
-## Get Quiz
+# 🚀 Deployment
 
-```
-GET /api/v1/quizzes/:id
-```
+The frontend is deployed using:
 
----
+## Vercel
 
-# 🔄 Authentication Flow
+Deployment process:
 
-```
-User Login
-     |
-     |
-Generate Access Token
-     |
-     |
-Generate Refresh Token
-     |
-     |
-Store Refresh Token Securely
-     |
-     |
-Access Protected Routes
-```
+1. Connect GitHub repository
+2. Select Vite framework
+3. Add environment variables
+4. Deploy
+
+Every push to the main branch automatically triggers a new deployment.
 
 ---
 
-# ⚡ Application Architecture
+# 🔮 Future Improvements
 
-```
-                 Frontend
-                    |
-                    |
-                    ↓
-             Express API
-                    |
-        -----------------------
-        |                     |
-        ↓                     ↓
-    MongoDB               Redis
-     Atlas              Upstash
-```
+Possible future features:
 
-
----
-
-# 🌍 Deployment
-
-Production environment:
-
-- Frontend: Vercel
-- Backend: Render
-- Database: MongoDB Atlas
-- Cache: Redis Cloud
-
-Deployment architecture:
-
-```
-Vercel Frontend
-        |
-        |
-        ↓
-Render Backend
-        |
- ----------------
- |              |
-MongoDB       Redis
-Atlas         Upstash
-```
-
----
-
-# 🧪 Future Improvements
-
-Planned features:
-
-- AI-powered question generation
-- User learning progress tracking
-- Vocabulary statistics
+- AI-generated explanations
+- Speaking practice
+- Audio pronunciation
+- Vocabulary flashcards
+- User learning statistics
 - Difficulty levels
-- Email verification
-- Password reset functionality
-- Swagger API documentation
-- Automated testing
-- CI/CD improvements
+- Daily challenges
+- Social learning features
 
+---
 
+# 🧪 Testing
 
+Testing is planned for future versions.
 
+Possible technologies:
+
+- Vitest
+- React Testing Library
+- Cypress
+
+---
+
+# ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub.
