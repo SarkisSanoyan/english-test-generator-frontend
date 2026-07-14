@@ -53,7 +53,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 
                 if (
-                    error.response?.status === 401 &&
+                    (error.response?.status === 401 ||
+                        error.response?.status === 403) &&
                     !originalRequest._retry
                 ) {
                     originalRequest._retry = true;
@@ -132,7 +133,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                     setIsAuthenticated(true);
 
 
-                    if(response.data.accessToken){
+                    if (response.data.accessToken) {
                         setAuthToken(
                             response.data.accessToken
                         );
@@ -180,7 +181,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(userData);
         setIsAuthenticated(true);
 
-        if(token){
+        if (token) {
             setAuthToken(token);
         }
 
@@ -194,7 +195,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
             await apiLogout();
 
-        } catch(error){
+        } catch (error) {
 
             console.error(
                 "Logout failed:",
