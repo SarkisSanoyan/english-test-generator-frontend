@@ -21,7 +21,7 @@ function LoginPage() {
 
         try {
             const response = await apiLogin({ email, password });
-            login(response.user, response.token);
+            login(response.user);
             navigate("/home");
         } catch (err) {
             const error = axios.isAxiosError(err) ? err.response?.data?.message : "Login failed. Please check your credentials.";

@@ -3,6 +3,7 @@ import axios from "axios";
 import type { User } from "../types/types";
 import { apiLogout } from "../api/auth.api";
 import { AUTH_API } from "../config/api.config";
+import { setAuthToken } from "../api/auth.api";
 
 type AuthContextType = {
     user: User | null;
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     useEffect(() => {
         const initAuth = async () => {
             try {
-                const res = await axios.get(`${AUTH_API}/refresh`, {
+                const res = await axios.post(`${AUTH_API}/refresh`, {
                     withCredentials: true,
                 });
 
@@ -48,10 +49,71 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         initAuth();
     }, []);
 
+    // Axios interceptor to handle token refresh on 401/403 responses
+    useEffect(() => {
+        axios.defaults.withCredentials = true;
 
-    const login = (userData: User) => {
+        const interceptor =
+            axios.interceptors.response.use(
+                response => response,
+                async error => {
+                    const originalRequest = error.config;
+                    if (!originalRequest) {
+                        return Promise.reject(error);
+                    }
+                    if (
+                        (error.response?.status === 401 ||
+                            error.response?.status === 403) &&
+
+                        !originalRequest._retry &&
+
+                        !originalRequest.url.includes("/auth/refresh")
+                    ) {
+
+                        originalRequest._retry = true;
+                        try {
+                            const res = await axios.post(
+                                `${AUTH_API}/refresh`,
+                                {},
+                                {
+                                    withCredentials: true,
+                                }
+                            );
+                            const token =
+                                res.data.accessToken;
+                            if (token) {
+                                setAuthToken(token);
+                                originalRequest.headers.Authorization =
+                                    `Bearer ${token}`;
+                            }
+                            return axios(originalRequest);
+                        } catch (err) {
+                            setAuthToken(null);
+                            setUser(null);
+                            setIsAuthenticated(false);
+
+                            return Promise.reject(err);
+                        }
+                    }
+                    return Promise.reject(error);
+                }
+            );
+
+        return () => {
+            axios.interceptors.response.eject(interceptor);
+        };
+    }, []);
+
+    const login = (
+        userData: User,
+        token?: string | null
+    ) => {
         setUser(userData);
         setIsAuthenticated(true);
+
+        if (token) {
+            setAuthToken(token);
+        }
     };
 
     const logout = async () => {
