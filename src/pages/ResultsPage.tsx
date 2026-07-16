@@ -152,45 +152,24 @@ function ResultsPage() {
                     />
                 </div>
 
-                {/* <div className="flex flex-wrap justify-center gap-4 mt-6">
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
-                    >
-                        Try Again
-                    </button>
-                    <button
-                        onClick={() => navigate("/home")}
-                        className="px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
-                    >
-                        Generate New Test
-                    </button>
-                    <button
-                        onClick={() => window.print()}
-                        className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
-                    >
-                        Save as PDF
-                    </button>
-                </div> */}
-
                 <div className="flex flex-nowrap justify-center gap-2 mt-6">
                     <button
                         onClick={() => navigate(-1)}
-                        className="px-3 py-2 text-sm bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
+                        className="px-3 py-2 text-md bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
                     >
                         Try Again
                     </button>
 
                     <button
                         onClick={() => navigate("/home")}
-                        className="px-3 py-2 text-sm bg-gray-700 hover:bg-gray-800 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
+                        className="px-3 py-2 text-md bg-gray-700 hover:bg-gray-800 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
                     >
                         Generate New Test
                     </button>
 
                     <button
                         onClick={() => window.print()}
-                        className="px-3 py-2 text-sm bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
+                        className="px-3 py-2 text-md bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
                     >
                         Save as PDF
                     </button>
