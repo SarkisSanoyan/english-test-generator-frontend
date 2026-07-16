@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createQuiz } from "../api/quiz.api";
-import styles from "./HomePage.module.css";
 
+import styles from "./HomePage.module.css";
+import { useAuth } from "../hooks/useAuth";
 
 export default function HomePage() {
   const [text, setText] = useState<string>("");
@@ -12,10 +13,16 @@ export default function HomePage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [difficulty, setDifficulty] = useState<"basic" | "intermediate" | "advanced">("basic");
 
+  const {user} = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if(!user) {
+      setError("You must be logged in to create a quiz.");
+      return;
+    }
 
     if (!text.trim() || !title.trim()) {
       setError("Please enter both title and text.");
